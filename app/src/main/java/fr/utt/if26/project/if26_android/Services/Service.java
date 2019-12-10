@@ -37,7 +37,6 @@ public class Service /*extends AsyncTask<String, Void, ResultHandler>*/ {
         Service.service.fetchGenericMovies(context, url, handler);
     }
 
-
     public void fetchVideoForMovie(Context context, Movie movie, final ResultHandler<List<Video>> handler) {
         String urlString = apiPath + "/movie/"+ movie.id +"/videos?api_key=" + apiKey;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
@@ -70,7 +69,6 @@ public class Service /*extends AsyncTask<String, Void, ResultHandler>*/ {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(jsonObjectRequest);
     }
-
 
     public void fetchMovies(Context context, String searchTerm, int page, final ResultHandler<MovieResult> handler) {
         String urlString = apiPath + "/search/movie?api_key="+ apiKey+ "&language=en-US&query="+ searchTerm +"&page="+ page +"&include_adult=false";
