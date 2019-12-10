@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MovieResult {
 
-    public List<Movie> movies = new ArrayList<Movie>();
+    public ArrayList<Movie> movies = new ArrayList<>();
     public int page;
     public int totalResults;
     public int totalPages;

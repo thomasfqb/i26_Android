@@ -28,7 +28,7 @@ public class Service /*extends AsyncTask<String, Void, ResultHandler>*/ {
 
     String apiKey = "6bf06b7a537c129fe359973f4cdc31f5";
     String apiPath = "https://api.themoviedb.org/3";
-    String imageBaseUrl = "https://image.tmdb.org/t/p/w400";
+    public String imageBaseUrl = "https://image.tmdb.org/t/p/w400";
 
 
     public void fetchUpcomingMovie(Context context, int page, final ResultHandler<MovieResult> handler) {

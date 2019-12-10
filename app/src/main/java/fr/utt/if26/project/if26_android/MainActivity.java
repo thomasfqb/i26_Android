@@ -24,22 +24,6 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemReselectedListener);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
 
-
-        // TEST API
-        Service.service.fetchUpcomingMovie(this, 1, new ResultHandler<MovieResult>() {
-            @Override
-            public void onSuccess(MovieResult result) {
-                for (Movie movie : result.movies) {
-                    System.out.println(movie.originalTitle);
-                }
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                System.out.println("failed to fetch movies:\\n" + e);
-            }
-        });
-        // END TEST API
     }
 
 
