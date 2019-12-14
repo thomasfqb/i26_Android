@@ -43,12 +43,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Log.i(TAG, "onBindViewHolder: called.");
         Glide.with(mContext)
                 .asBitmap()
-                .load(Service.service.imageBaseUrl + mMovies.get(position).posterPath)
+                .load(Service.service.imageBaseUrl + mMovies.get(position).getPosterPath())
                 .into(holder.movieImage);
 
-        holder.movieTitle.setText(mMovies.get(position).originalTitle);
-        holder.movieReleaseDate.setText(mMovies.get(position).releaseDate);
-        holder.movieAverageRating.setText(mMovies.get(position).voteAverage.toString());
+        holder.movieTitle.setText(mMovies.get(position).getOriginalTitle());
+        holder.movieReleaseDate.setText(mMovies.get(position).getReleaseDate());
+        holder.movieAverageRating.setText(mMovies.get(position).getVoteAverage().toString());
 
        /* holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -24,8 +24,6 @@ public class Service /*extends AsyncTask<String, Void, ResultHandler>*/ {
 
     public static Service service = new Service();
 
-    private void constructor() {}
-
     String apiKey = "6bf06b7a537c129fe359973f4cdc31f5";
     String apiPath = "https://api.themoviedb.org/3";
     public String imageBaseUrl = "https://image.tmdb.org/t/p/w400";
@@ -38,7 +36,7 @@ public class Service /*extends AsyncTask<String, Void, ResultHandler>*/ {
     }
 
     public void fetchVideoForMovie(Context context, Movie movie, final ResultHandler<List<Video>> handler) {
-        String urlString = apiPath + "/movie/"+ movie.id +"/videos?api_key=" + apiKey;
+        String urlString = apiPath + "/movie/"+ movie.getId() +"/videos?api_key=" + apiKey;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, urlString, null, new Response.Listener<JSONObject>() {
 

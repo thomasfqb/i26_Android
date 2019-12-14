@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,9 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-
-import fr.utt.if26.project.if26_android.Model.Movie;
 import fr.utt.if26.project.if26_android.Model.MovieResult;
 import fr.utt.if26.project.if26_android.Services.ResultHandler;
 import fr.utt.if26.project.if26_android.Services.Service;
@@ -23,11 +19,10 @@ import fr.utt.if26.project.if26_android.Services.Service;
 public class HomeFragment extends Fragment {
 
     private static final String TAG = "HomeFragment";
-    //vars
+
 
     private MovieResult mMovieResult;
-    private ArrayList<String> mMovieImageDescription = new ArrayList<>();
-    private ArrayList<String> mMovieImageUrls = new ArrayList<>();
+
 
     @Nullable
     @Override
@@ -58,7 +53,7 @@ public class HomeFragment extends Fragment {
     private void initRecyclerView (final View view) {
         Log.d(TAG, "initRecyclerView: recyclerView");
         RecyclerView recyclerView = view.findViewById(R.id.recyvlerview_home);
-        final RecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(view.getContext(), mMovieResult.movies);
+        final RecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(view.getContext(), mMovieResult.getMovies());
         recyclerView.setAdapter(adapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -77,14 +72,16 @@ public class HomeFragment extends Fragment {
 
     private void fetchMoreMovies (final RecyclerViewAdapter adapter) {
         if (mMovieResult == null) { return; }
-        final int page = mMovieResult.page + 1;
+        final int page = mMovieResult.getPage() + 1;
 
         Service.service.fetchUpcomingMovie(getActivity(), page, new ResultHandler<MovieResult>() {
             @Override
             public void onSuccess(MovieResult result) {
-                mMovieResult.movies.addAll(result.movies);
-                mMovieResult.page = page;
-                adapter.notifyDataSetChanged();
+                if (!result.getMovies().isEmpty()) {
+                    mMovieResult.getMovies().addAll(result.getMovies());
+                    mMovieResult.setPage(page);
+                    adapter.notifyDataSetChanged();
+                }
 
 
             }

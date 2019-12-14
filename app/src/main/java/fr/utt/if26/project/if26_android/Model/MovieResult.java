@@ -10,13 +10,32 @@ import java.util.List;
 
 public class MovieResult {
 
-    public ArrayList<Movie> movies = new ArrayList<>();
-    public int page;
-    public int totalResults;
-    public int totalPages;
+    private ArrayList<Movie> movies = new ArrayList<>();
+    private int page;
+    private int totalResults;
+    private int totalPages;
 
-    // Mdr t'es une chevre thomas
-    private void constructor() {}
+
+
+    public ArrayList<Movie> getMovies() {
+        return movies;
+    }
+
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
+    public void emptyMoviesList () {
+        movies.clear();
+    }
+
+    public MovieResult() {
+        this.movies = new ArrayList<>();
+    }
 
     public MovieResult(JSONObject jsonResult) throws JSONException {
         JSONArray JSONMovies = jsonResult.getJSONArray("results");
@@ -26,9 +45,9 @@ public class MovieResult {
             movies.add(new Movie(JSONMovie));
         }
 
-        page = (int) jsonResult.get("page");
-        totalResults = (int) jsonResult.get("total_results");
-        totalPages = (int) jsonResult.get("total_pages");
+        this.page = (int) jsonResult.get("page");
+        this.totalResults = (int) jsonResult.get("total_results");
+        this.totalPages = (int) jsonResult.get("total_pages");
 
     }
 
