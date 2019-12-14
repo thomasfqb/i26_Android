@@ -15,6 +15,7 @@ public class MovieResult {
     public int totalResults;
     public int totalPages;
 
+    // Mdr t'es une chevre thomas
     private void constructor() {}
 
     public MovieResult(JSONObject jsonResult) throws JSONException {

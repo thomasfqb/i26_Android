@@ -30,39 +30,53 @@
                 android:background="@color/cardview_dark_background"
                 android:src="@drawable/ic_favorite_black_24dp"/>
 
-        <LinearLayout
-            android:paddingTop="8dp"
-            android:layout_toRightOf="@+id/movie_image"
-            android:orientation="vertical"
-            android:layout_marginStart="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/movie_title"
-                android:layout_width="wrap_content"
-                android:textStyle="bold"
-                android:layout_height="wrap_content"
-                android:text="Bassekou"
-                android:textColor="#000"
-                android:textSize="24sp"/>
-            <TextView
-                android:id="@+id/movie_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Facile"
-                android:textColor="#000"
+            <LinearLayout
+                android:paddingTop="8dp"
+                android:layout_toRightOf="@+id/movie_image"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/movie_title"
+                    android:layout_width="wrap_content"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content"
+                    android:text="Titre"
+                    android:textColor="#000"
+                    android:textSize="24sp"/>
+                <TextView
+                    android:id="@+id/movie_date_release"
+                    android:paddingTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Release date"
+                    android:textColor="#000"
 
-                android:textSize="17sp"
-                />
-            <TextView
-                android:id="@+id/movie_average_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Easy"
-                android:textColor="#000"
-                android:textSize="17sp"/>
+                    android:textSize="17sp"
+                    />
+                <LinearLayout
+                    android:paddingTop="5dp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-        </LinearLayout>
+                    <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/movie_rating"
+                    android:src="@drawable/ic_star_black_24dp"/>
+                    <TextView
+                        android:id="@+id/movie_average_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rate"
+                        android:paddingLeft="5dp"
+                        android:textColor="#000"
+                        android:textSize="17sp"/>
+                </LinearLayout>
+
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

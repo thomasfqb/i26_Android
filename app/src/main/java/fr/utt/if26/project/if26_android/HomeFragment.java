@@ -57,8 +57,8 @@ public class HomeFragment extends Fragment {
 
     private void initRecyclerView (final View view) {
         Log.d(TAG, "initRecyclerView: recyclerView");
-        RecyclerView recyclerView = view.findViewById(R.id.recyvlerview);
-        final HomeRecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(view.getContext(), mMovieResult.movies);
+        RecyclerView recyclerView = view.findViewById(R.id.recyvlerview_home);
+        final RecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(view.getContext(), mMovieResult.movies);
         recyclerView.setAdapter(adapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -75,9 +75,10 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
 
-    private void fetchMoreMovies (final HomeRecyclerViewAdapter adapter) {
+    private void fetchMoreMovies (final RecyclerViewAdapter adapter) {
         if (mMovieResult == null) { return; }
         final int page = mMovieResult.page + 1;
+
         Service.service.fetchUpcomingMovie(getActivity(), page, new ResultHandler<MovieResult>() {
             @Override
             public void onSuccess(MovieResult result) {
