@@ -51,5 +51,11 @@ public class MovieResult {
 
     }
 
+    public int getTotalResults() {
+        return totalResults;
+    }
 
+    public int getTotalPages() {
+        return totalPages;
+    }
 }

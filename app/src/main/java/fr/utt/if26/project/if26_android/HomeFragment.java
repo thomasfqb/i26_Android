@@ -74,24 +74,22 @@ public class HomeFragment extends Fragment {
         if (mMovieResult == null) { return; }
         final int page = mMovieResult.getPage() + 1;
 
-        Service.service.fetchUpcomingMovie(getActivity(), page, new ResultHandler<MovieResult>() {
-            @Override
-            public void onSuccess(MovieResult result) {
-                if (!result.getMovies().isEmpty()) {
-                    mMovieResult.getMovies().addAll(result.getMovies());
-                    mMovieResult.setPage(page);
-                    adapter.notifyDataSetChanged();
+        if (mMovieResult.getTotalPages() >= page) {
+            Service.service.fetchUpcomingMovie(getActivity(), page, new ResultHandler<MovieResult>() {
+                @Override
+                public void onSuccess(MovieResult result) {
+                        mMovieResult.getMovies().addAll(result.getMovies());
+                        mMovieResult.setPage(page);
+                        adapter.notifyDataSetChanged();
                 }
 
-
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "onCallApi: succeed");
-                System.out.println("failed to fetch movies:\\n" + e);
-            }
-        });
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d(TAG, "onCallApi: succeed");
+                    System.out.println("failed to fetch movies:\\n" + e);
+                }
+            });
+        }
     }
 }
 

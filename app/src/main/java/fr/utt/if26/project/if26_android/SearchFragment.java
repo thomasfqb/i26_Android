@@ -99,11 +99,6 @@ public class SearchFragment extends Fragment {
                         }
                     });
 
-                } else {
-                    if (!mMovieResult.getMovies().isEmpty()) {
-                        mMovieResult.emptyMoviesList();
-                    }
-                    initRecyclerView(view, query);
                 }
             }
             @Override
@@ -136,27 +131,26 @@ public class SearchFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
 
-    private void fetchMoreMovies (final RecyclerViewAdapter adapter, String query) {
+    private void fetchMoreMovies (final RecyclerViewAdapter adapter, final String query) {
         if (mMovieResult == null) { return; }
 
         final int page = mMovieResult.getPage() + 1;
+        if (mMovieResult.getTotalPages() >= page) {
+            Service.service.fetchMovies(getActivity(), query, page, new ResultHandler<MovieResult>() {
+                @Override
+                public void onSuccess(MovieResult result) {
+                        mMovieResult.getMovies().addAll(result.getMovies());
+                        mMovieResult.setPage(page);
+                        adapter.notifyDataSetChanged();
+                    }
 
-        Service.service.fetchMovies(getActivity(), query, page, new ResultHandler<MovieResult>() {
-            @Override
-            public void onSuccess(MovieResult result) {
-                if (!result.getMovies().isEmpty()) {
-                    mMovieResult.getMovies().addAll(result.getMovies());
-                    mMovieResult.setPage(page);
-                    adapter.notifyDataSetChanged();
+                @Override
+                public void onFailure(Exception e) {
+                    Log.d(TAG, "onCallApi: failed");
+                    System.out.println("failed to fetch more movies:\\n" + e);
                 }
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "onCallApi: failed");
-                System.out.println("failed to fetch more movies:\\n" + e);
-            }
-        });
+            });
+        }
     }
 
 
