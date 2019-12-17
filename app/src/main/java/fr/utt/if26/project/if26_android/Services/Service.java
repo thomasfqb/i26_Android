@@ -69,7 +69,7 @@ public class Service /*extends AsyncTask<String, Void, ResultHandler>*/ {
     }
 
     public void fetchMovies(Context context, String searchTerm, int page, final ResultHandler<MovieResult> handler) {
-        String urlString = apiPath + "/search/movie?api_key="+ apiKey+ "&language=en-US&query="+ searchTerm +"&page="+ page +"&include_adult=false";
+        String urlString = apiPath + "/search/movie?api_key="+ apiKey + "&language=en-US&query="+ searchTerm +"&page="+ page +"&include_adult=false";
         Service.service.fetchGenericMovies(context, urlString, handler);
     }
 

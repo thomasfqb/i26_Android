@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="150dp"
     android:layout_margin="10dp"
     android:background="@color/cardview_light_background"
@@ -9,9 +11,6 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         card_view:cardBackgroundColor="@android:color/transparent"
         android:background="@android:drawable/dialog_holo_light_frame"
         card_view:cardCornerRadius="12dp"
@@ -31,49 +30,72 @@
                 android:src="@drawable/ic_favorite_black_24dp"/>
 
             <LinearLayout
-                android:paddingTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
                 android:layout_toRightOf="@+id/movie_image"
                 android:orientation="vertical"
-                android:layout_marginStart="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:id="@+id/movie_title"
-                    android:layout_width="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_height="wrap_content"
-                    android:text="Titre"
-                    android:textColor="#000"
-                    android:textSize="24sp"/>
+                android:paddingTop="8dp">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/movie_tile_favorite_border"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+
+                        android:id="@+id/movie_title"
+                        android:layout_width="240dp"
+                        android:layout_height="wrap_content"
+                        android:text="Titre"
+                        android:textColor="#000"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        card_view:layout_constraintStart_toStartOf="parent"
+                        tools:layout_editor_absoluteY="0dp" />
+
+                    <ImageView
+                        android:id="@+id/add_favorite"
+                        android:layout_width="28dp"
+                        android:layout_height="24dp"
+
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_favorite_border_black_24dp"
+                        card_view:layout_constraintEnd_toEndOf="parent"
+                        tools:layout_editor_absoluteY="3dp" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <TextView
                     android:id="@+id/movie_date_release"
-                    android:paddingTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
                     android:text="Release date"
                     android:textColor="#000"
 
-                    android:textSize="17sp"
-                    />
+                    android:textSize="17sp" />
+
                 <LinearLayout
-                    android:paddingTop="5dp"
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingTop="5dp">
 
                     <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/movie_rating"
-                    android:src="@drawable/ic_star_black_24dp"/>
+                        android:id="@+id/movie_rating"
+                        android:layout_width="20dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_star_black_24dp" />
+
                     <TextView
                         android:id="@+id/movie_average_rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rate"
                         android:paddingLeft="5dp"
+                        android:text="Rate"
                         android:textColor="#000"
-                        android:textSize="17sp"/>
+                        android:textSize="17sp" />
                 </LinearLayout>
 
             </LinearLayout>

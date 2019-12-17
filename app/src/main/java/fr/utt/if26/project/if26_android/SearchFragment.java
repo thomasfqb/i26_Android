@@ -40,6 +40,8 @@ public class SearchFragment extends Fragment {
 
     private AppBarLayout viewMoviesBar, searchBar;
 
+    private String query1;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,7 +53,6 @@ public class SearchFragment extends Fragment {
         searchBar = view.findViewById(R.id.searchToolbar);
         final TextView searchTextView = view.findViewById(R.id.tv_search_text);
         Log.d(TAG, "onCreateView: started");
-
         setAppBaeState(STANDARD_APPBAR);
 
         RelativeLayout searchLayoutClickable = view.findViewById(R.id.search_layout_clickable);
@@ -63,6 +64,7 @@ public class SearchFragment extends Fragment {
 
             }
         });
+
 
         ImageView ivBackArrow = view.findViewById(R.id.return_black_arrow);
         ivBackArrow.setOnClickListener(new View.OnClickListener() {
@@ -82,9 +84,11 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mMovieResult = null;
+
                 final String query = mSearchMovies.getText().toString().toLowerCase(Locale.getDefault());
                 if (query.length() > 2) {
-
+                    query1 = query;
                     Service.service.fetchMovies(getActivity(), query, 1, new ResultHandler<MovieResult>() {
                         @Override
                         public void onSuccess(MovieResult result) {
@@ -117,6 +121,8 @@ public class SearchFragment extends Fragment {
         final RecyclerViewAdapter adapter = new SearchRecyclerViewAdapter(view.getContext(), mMovieResult.getMovies());
         recyclerView.setAdapter(adapter);
 
+
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -129,28 +135,29 @@ public class SearchFragment extends Fragment {
         });
 
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
     }
 
     private void fetchMoreMovies (final RecyclerViewAdapter adapter, final String query) {
         if (mMovieResult == null) { return; }
-
+        if (mMovieResult.getTotalPages() == mMovieResult.getPage()) { return; }
+        System.out.println(mMovieResult.getTotalPages());
         final int page = mMovieResult.getPage() + 1;
-        if (mMovieResult.getTotalPages() >= page) {
-            Service.service.fetchMovies(getActivity(), query, page, new ResultHandler<MovieResult>() {
-                @Override
-                public void onSuccess(MovieResult result) {
-                        mMovieResult.getMovies().addAll(result.getMovies());
-                        mMovieResult.setPage(page);
-                        adapter.notifyDataSetChanged();
-                    }
-
-                @Override
-                public void onFailure(Exception e) {
-                    Log.d(TAG, "onCallApi: failed");
-                    System.out.println("failed to fetch more movies:\\n" + e);
+        Service.service.fetchMovies(getActivity(), query1, page, new ResultHandler<MovieResult>() {
+            @Override
+            public void onSuccess(MovieResult result) {
+                    mMovieResult.getMovies().addAll(result.getMovies());
+                    mMovieResult.setPage(page);
+                    adapter.notifyDataSetChanged();
                 }
-            });
-        }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.d(TAG, "onCallApi: failed");
+                System.out.println("failed to fetch more movies:\\n" + e);
+            }
+        });
+
     }
 
 

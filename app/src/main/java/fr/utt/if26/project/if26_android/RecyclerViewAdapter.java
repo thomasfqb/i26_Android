@@ -24,6 +24,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private Context mContext;
     private ArrayList<Movie> mMovies;
+    private boolean isFavorite;
+
+    private View.OnClickListener onItemClickListener;
+
+    public void setItemClickListener(View.OnClickListener clickListener) {
+        onItemClickListener = clickListener;
+    }
 
     public RecyclerViewAdapter(Context mContext, ArrayList<Movie> movies) {
         this.mMovies  = movies;
@@ -35,6 +42,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_list_item, parent, false);
         RecyclerViewAdapter.ViewHolder viewHolder = new RecyclerViewAdapter.ViewHolder(view);
+
+
         return viewHolder;
     }
 
@@ -49,6 +58,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.movieTitle.setText(mMovies.get(position).getOriginalTitle());
         holder.movieReleaseDate.setText(mMovies.get(position).getReleaseDate());
         holder.movieAverageRating.setText(mMovies.get(position).getVoteAverage().toString());
+
+        isFavorite = true;
+        holder.addToFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFavorite) {
+                    ((ImageView) v).setImageResource(R.drawable.ic_favorite_black_24dp);
+                    isFavorite = false;
+                } else {
+                    ((ImageView) v).setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                    isFavorite = true;
+                }
+            }
+        });
+
 
        /* holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +94,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView movieTitle;
         TextView movieReleaseDate;
         TextView movieAverageRating;
+        ImageView addToFavorite;
 
         RelativeLayout parentLayout;
         public ViewHolder(@NonNull View itemView) {
@@ -79,6 +104,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             parentLayout = itemView.findViewById(R.id.parent_layout);
             movieReleaseDate = itemView.findViewById(R.id.movie_date_release);
             movieAverageRating = itemView.findViewById(R.id.movie_average_rating);
+            addToFavorite = itemView.findViewById(R.id.add_favorite);
+            addToFavorite.setTag(movieTitle);
+            itemView.setOnClickListener(onItemClickListener);
 
         }
     }
