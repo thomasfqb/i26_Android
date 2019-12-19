@@ -12,11 +12,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import fr.utt.if26.project.if26_android.Model.Movie;
 import fr.utt.if26.project.if26_android.Model.MovieResult;
 import fr.utt.if26.project.if26_android.Services.ResultHandler;
 import fr.utt.if26.project.if26_android.Services.Service;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements RecyclerViewClickListener {
 
     private static final String TAG = "HomeFragment";
 
@@ -51,9 +52,8 @@ public class HomeFragment extends Fragment {
 
 
     private void initRecyclerView (final View view) {
-        Log.d(TAG, "initRecyclerView: recyclerView");
         RecyclerView recyclerView = view.findViewById(R.id.recyvlerview_home);
-        final RecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(view.getContext(), mMovieResult.getMovies());
+        final RecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(view.getContext(), this, mMovieResult.getMovies());
         recyclerView.setAdapter(adapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -88,6 +88,12 @@ public class HomeFragment extends Fragment {
                 System.out.println("failed to fetch movies:\\n" + e);
             }
         });
+    }
+
+    @Override
+    public void recyclerViewListClicked(View v, int position) {
+        Movie movie = mMovieResult.getMovies().get(position);
+        System.out.println(movie.getOriginalTitle());
     }
 }
 

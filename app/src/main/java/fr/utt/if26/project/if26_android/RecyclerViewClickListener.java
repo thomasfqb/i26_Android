@@ -1,4 +1,9 @@
 package fr.utt.if26.project.if26_android;
 
-public class ff {
+import android.view.View;
+
+public interface RecyclerViewClickListener {
+
+    void recyclerViewListClicked(View v, int position);
+
 }

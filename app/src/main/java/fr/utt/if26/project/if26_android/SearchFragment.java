@@ -23,11 +23,12 @@ import com.google.android.material.appbar.AppBarLayout;
 import java.util.Locale;
 import java.util.Objects;
 
+import fr.utt.if26.project.if26_android.Model.Movie;
 import fr.utt.if26.project.if26_android.Model.MovieResult;
 import fr.utt.if26.project.if26_android.Services.ResultHandler;
 import fr.utt.if26.project.if26_android.Services.Service;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements RecyclerViewClickListener {
 
     private static final String TAG = "SearchFragment";
     private static final int STANDARD_APPBAR = 0;
@@ -118,7 +119,7 @@ public class SearchFragment extends Fragment {
     private void initRecyclerView (final View view, final String query) {
         Log.d(TAG, "initRecyclerView: recyclerView");
         RecyclerView recyclerView = view.findViewById(R.id.recyvlerview_search);
-        final RecyclerViewAdapter adapter = new SearchRecyclerViewAdapter(view.getContext(), mMovieResult.getMovies());
+        final RecyclerViewAdapter adapter = new SearchRecyclerViewAdapter(view.getContext(), this, mMovieResult.getMovies());
         recyclerView.setAdapter(adapter);
 
 
@@ -173,7 +174,6 @@ public class SearchFragment extends Fragment {
 
     // Sets the appbar state for either search mode or standard mode.
     private void setAppBaeState(int state) {
-        Log.d(TAG, "setAppBaeState: changing app bar state to: " + state);
         mAppBarState = state;
         if (mAppBarState == STANDARD_APPBAR) {
             searchBar.setVisibility(View.GONE);
@@ -202,4 +202,9 @@ public class SearchFragment extends Fragment {
     }
 
 
+    @Override
+    public void recyclerViewListClicked(View v, int position) {
+        Movie movie = mMovieResult.getMovies().get(position);
+        System.out.println(movie.getOriginalTitle());
+    }
 }

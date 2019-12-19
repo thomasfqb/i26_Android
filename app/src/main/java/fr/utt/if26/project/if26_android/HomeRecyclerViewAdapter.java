@@ -8,7 +8,7 @@ import fr.utt.if26.project.if26_android.Model.Movie;
 
 
 public class HomeRecyclerViewAdapter extends RecyclerViewAdapter {
-    public HomeRecyclerViewAdapter(Context mContext, ArrayList<Movie> movies) {
-       super(mContext, movies);
+    public HomeRecyclerViewAdapter(Context mContext, RecyclerViewClickListener clickListener, ArrayList<Movie> movies) {
+        super(mContext,clickListener, movies);
     }
 }

@@ -23,18 +23,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private static final String TAG = "RecyclerViewAdapter";
 
     private Context mContext;
+    private RecyclerViewClickListener clickListener;
     private ArrayList<Movie> mMovies;
     private boolean isFavorite;
 
-    private View.OnClickListener onItemClickListener;
 
-    public void setItemClickListener(View.OnClickListener clickListener) {
-        onItemClickListener = clickListener;
-    }
-
-    public RecyclerViewAdapter(Context mContext, ArrayList<Movie> movies) {
+    public RecyclerViewAdapter(Context mContext, RecyclerViewClickListener clickListener, ArrayList<Movie> movies) {
         this.mMovies  = movies;
         this.mContext = mContext;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -73,14 +70,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             }
         });
 
-
-       /* holder.parentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "onClick: clicked on: " + mMovieImage.get(position));
-                Toast.makeText(mContext, mmovieTitles.get(position), Toast.LENGTH_LONG).show();
-            }
-        });*/
     }
 
     @Override
@@ -88,7 +77,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return mMovies.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView movieImage;
         TextView movieTitle;
@@ -106,8 +95,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             movieAverageRating = itemView.findViewById(R.id.movie_average_rating);
             addToFavorite = itemView.findViewById(R.id.add_favorite);
             addToFavorite.setTag(movieTitle);
-            itemView.setOnClickListener(onItemClickListener);
+            itemView.setOnClickListener(this);
+        }
 
+        @Override
+        public void onClick(View v) {
+            clickListener.recyclerViewListClicked(v, this.getLayoutPosition());
         }
     }
 }
