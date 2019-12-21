@@ -14,24 +14,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
-
-import fr.utt.if26.project.if26_android.Model.Movie;
+import fr.utt.if26.project.if26_android.Model.MovieResult;
 import fr.utt.if26.project.if26_android.Services.Service;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private static final String TAG = "RecyclerViewAdapter";
 
     private Context mContext;
-    private RecyclerViewClickListener clickListener;
-    private ArrayList<Movie> mMovies;
-    private boolean isFavorite;
+    private UserInteraction userInteraction;
+    private MovieResult mMovies;
 
 
-    public RecyclerViewAdapter(Context mContext, RecyclerViewClickListener clickListener, ArrayList<Movie> movies) {
+
+    public RecyclerViewAdapter(Context mContext, UserInteraction userInteraction, MovieResult movies) {
         this.mMovies  = movies;
         this.mContext = mContext;
-        this.clickListener = clickListener;
+        this.userInteraction = userInteraction;
     }
 
     @NonNull
@@ -49,32 +47,19 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Log.i(TAG, "onBindViewHolder: called.");
         Glide.with(mContext)
                 .asBitmap()
-                .load(Service.service.imageBaseUrl + mMovies.get(position).getPosterPath())
+                .load(Service.service.imageBaseUrl + mMovies.getMovies().get(position).getPosterPath())
                 .into(holder.movieImage);
 
-        holder.movieTitle.setText(mMovies.get(position).getOriginalTitle());
-        holder.movieReleaseDate.setText(mMovies.get(position).getReleaseDate());
-        holder.movieAverageRating.setText(mMovies.get(position).getVoteAverage().toString());
+        holder.movieTitle.setText(mMovies.getMovies().get(position).getOriginalTitle());
+        holder.movieReleaseDate.setText(mMovies.getMovies().get(position).getReleaseDate());
+        holder.movieAverageRating.setText(mMovies.getMovies().get(position).getVoteAverage().toString());
 
-        isFavorite = true;
-        holder.addToFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isFavorite) {
-                    ((ImageView) v).setImageResource(R.drawable.ic_favorite_black_24dp);
-                    isFavorite = false;
-                } else {
-                    ((ImageView) v).setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                    isFavorite = true;
-                }
-            }
-        });
 
     }
 
     @Override
     public int getItemCount() {
-        return mMovies.size();
+        return mMovies.getMovies().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -83,7 +68,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         TextView movieTitle;
         TextView movieReleaseDate;
         TextView movieAverageRating;
-        ImageView addToFavorite;
 
         RelativeLayout parentLayout;
         public ViewHolder(@NonNull View itemView) {
@@ -93,14 +77,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             parentLayout = itemView.findViewById(R.id.parent_layout);
             movieReleaseDate = itemView.findViewById(R.id.movie_date_release);
             movieAverageRating = itemView.findViewById(R.id.movie_average_rating);
-            addToFavorite = itemView.findViewById(R.id.add_favorite);
-            addToFavorite.setTag(movieTitle);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            clickListener.recyclerViewListClicked(v, this.getLayoutPosition());
+            userInteraction.recyclerViewListClicked(v, this.getLayoutPosition(), mMovies);
         }
     }
 }

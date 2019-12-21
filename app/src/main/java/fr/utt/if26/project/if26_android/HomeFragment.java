@@ -1,5 +1,6 @@
 package fr.utt.if26.project.if26_android;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,48 +13,41 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import fr.utt.if26.project.if26_android.Model.Movie;
 import fr.utt.if26.project.if26_android.Model.MovieResult;
-import fr.utt.if26.project.if26_android.Services.ResultHandler;
-import fr.utt.if26.project.if26_android.Services.Service;
 
-public class HomeFragment extends Fragment implements RecyclerViewClickListener {
+public class HomeFragment extends Fragment{
 
     private static final String TAG = "HomeFragment";
-
-
     private MovieResult mMovieResult;
+    private View view;
+    private RecyclerViewAdapter adapter;
+    private UserInteraction userInteraction = new OnHomeFragment(this);
 
+
+    public MovieResult getmMovieResult() {
+        return mMovieResult;
+    }
+
+    public RecyclerViewAdapter getAdapter() {
+        return adapter;
+    }
+
+    public void setmMovieResult(MovieResult mMovieResult) {
+        this.mMovieResult = mMovieResult;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView: started");
-
-        final View view = inflater.inflate(R.layout.fragment_home, container, false);
-
-        // TEST API
-        Service.service.fetchUpcomingMovie(getActivity(), 1, new ResultHandler<MovieResult>() {
-            @Override
-            public void onSuccess(MovieResult result) {
-                mMovieResult = result;
-                initRecyclerView(view);
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "onCallApi: succeed");
-                System.out.println("failed to fetch movies:\\n" + e);
-            }
-        });
-        // END TEST API
+        view = inflater.inflate(R.layout.fragment_home, container, false);
+        userInteraction.fetchMovies();
         return view;
     }
 
-
-    private void initRecyclerView (final View view) {
+    public void initRecyclerView () {
         RecyclerView recyclerView = view.findViewById(R.id.recyvlerview_home);
-        final RecyclerViewAdapter adapter = new HomeRecyclerViewAdapter(view.getContext(), this, mMovieResult.getMovies());
+        adapter = new HomeRecyclerViewAdapter(view.getContext(), userInteraction, mMovieResult);
         recyclerView.setAdapter(adapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -62,7 +56,7 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
                 super.onScrollStateChanged(recyclerView, newState);
 
                 if (!recyclerView.canScrollVertically(1)) {
-                    fetchMoreMovies(adapter);
+                    fetchMoreMovies();
                 }
             }
         });
@@ -70,30 +64,9 @@ public class HomeFragment extends Fragment implements RecyclerViewClickListener 
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
     }
 
-    private void fetchMoreMovies (final RecyclerViewAdapter adapter) {
-        if (mMovieResult == null) { return; }
-        final int page = mMovieResult.getPage() + 1;
-        if (mMovieResult.getTotalPages() == mMovieResult.getPage()) { return;}
-        Service.service.fetchUpcomingMovie(getActivity(), page, new ResultHandler<MovieResult>() {
-            @Override
-            public void onSuccess(MovieResult result) {
-                mMovieResult.getMovies().addAll(result.getMovies());
-                mMovieResult.setPage(page);
-                adapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "onCallApi: succeed");
-                System.out.println("failed to fetch movies:\\n" + e);
-            }
-        });
-    }
-
-    @Override
-    public void recyclerViewListClicked(View v, int position) {
-        Movie movie = mMovieResult.getMovies().get(position);
-        System.out.println(movie.getOriginalTitle());
+    private void fetchMoreMovies () {
+        userInteraction.fetchMoreMovies();
     }
 }
 

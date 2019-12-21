@@ -6,7 +6,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
-
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -23,31 +22,44 @@ import com.google.android.material.appbar.AppBarLayout;
 import java.util.Locale;
 import java.util.Objects;
 
-import fr.utt.if26.project.if26_android.Model.Movie;
 import fr.utt.if26.project.if26_android.Model.MovieResult;
-import fr.utt.if26.project.if26_android.Services.ResultHandler;
-import fr.utt.if26.project.if26_android.Services.Service;
 
-public class SearchFragment extends Fragment implements RecyclerViewClickListener {
+public class SearchFragment extends Fragment {
 
     private static final String TAG = "SearchFragment";
     private static final int STANDARD_APPBAR = 0;
     private static final int SEARCH_APPBAR = 1;
     private int mAppBarState;
-
+    private View view;
     private EditText mSearchMovies;
-
     private MovieResult mMovieResult = new MovieResult();
-
     private AppBarLayout viewMoviesBar, searchBar;
+    private String query;
 
-    private String query1;
+    private RecyclerViewAdapter adapter;
+    private UserInteraction userInteraction = new OnSearchFragment(this);
+
+    public MovieResult getmMovieResult() {
+        return mMovieResult;
+    }
+
+    public RecyclerViewAdapter getAdapter() {
+        return adapter;
+    }
+
+    public void setmMovieResult(MovieResult mMovieResult) {
+        this.mMovieResult = mMovieResult;
+    }
+
+    public String getQuery() {
+        return query;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View view = inflater.inflate(R.layout.fragment_search, container, false);
+        view = inflater.inflate(R.layout.fragment_search, container, false);
 
         mSearchMovies = view.findViewById(R.id.search_movie_query);
         viewMoviesBar = view.findViewById(R.id.view_movies_toolbar);
@@ -80,29 +92,15 @@ public class SearchFragment extends Fragment implements RecyclerViewClickListene
         mSearchMovies.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                query = "";
+                mMovieResult.emptyMoviesList();
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mMovieResult = null;
-
-                final String query = mSearchMovies.getText().toString().toLowerCase(Locale.getDefault());
+                query = mSearchMovies.getText().toString().toLowerCase(Locale.getDefault());
                 if (query.length() > 2) {
-                    query1 = query;
-                    Service.service.fetchMovies(getActivity(), query, 1, new ResultHandler<MovieResult>() {
-                        @Override
-                        public void onSuccess(MovieResult result) {
-                            mMovieResult = result;
-                            initRecyclerView(view, query);
-                        }
-
-                        @Override
-                        public void onFailure(Exception e) {
-                            Log.d(TAG, "onCallApi: failed");
-                            System.out.println("failed to fetch movies:\\n" + e);
-                        }
-                    });
+                    fetchMovies();
 
                 }
             }
@@ -116,13 +114,11 @@ public class SearchFragment extends Fragment implements RecyclerViewClickListene
         return view;
     }
 
-    private void initRecyclerView (final View view, final String query) {
+    public void initRecyclerView () {
         Log.d(TAG, "initRecyclerView: recyclerView");
         RecyclerView recyclerView = view.findViewById(R.id.recyvlerview_search);
-        final RecyclerViewAdapter adapter = new SearchRecyclerViewAdapter(view.getContext(), this, mMovieResult.getMovies());
+        adapter = new SearchRecyclerViewAdapter(view.getContext(), userInteraction, mMovieResult);
         recyclerView.setAdapter(adapter);
-
-
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -130,7 +126,7 @@ public class SearchFragment extends Fragment implements RecyclerViewClickListene
                 super.onScrollStateChanged(recyclerView, newState);
 
                 if (!recyclerView.canScrollVertically(1)) {
-                    fetchMoreMovies(adapter, query);
+                    fetchMoreMovies();
                 }
             }
         });
@@ -138,29 +134,6 @@ public class SearchFragment extends Fragment implements RecyclerViewClickListene
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
     }
-
-    private void fetchMoreMovies (final RecyclerViewAdapter adapter, final String query) {
-        if (mMovieResult == null) { return; }
-        if (mMovieResult.getTotalPages() == mMovieResult.getPage()) { return; }
-        System.out.println(mMovieResult.getTotalPages());
-        final int page = mMovieResult.getPage() + 1;
-        Service.service.fetchMovies(getActivity(), query1, page, new ResultHandler<MovieResult>() {
-            @Override
-            public void onSuccess(MovieResult result) {
-                    mMovieResult.getMovies().addAll(result.getMovies());
-                    mMovieResult.setPage(page);
-                    adapter.notifyDataSetChanged();
-                }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.d(TAG, "onCallApi: failed");
-                System.out.println("failed to fetch more movies:\\n" + e);
-            }
-        });
-
-    }
-
 
     // Initiate toggle (it means when you click the search icon it pops up the editText and clicking the back button goes to the search icon again)
     private void toggleToolBarState() {
@@ -202,9 +175,11 @@ public class SearchFragment extends Fragment implements RecyclerViewClickListene
     }
 
 
-    @Override
-    public void recyclerViewListClicked(View v, int position) {
-        Movie movie = mMovieResult.getMovies().get(position);
-        System.out.println(movie.getOriginalTitle());
+    private void fetchMovies() {
+        userInteraction.fetchMovies();
+    }
+
+    private void fetchMoreMovies () {
+        userInteraction.fetchMoreMovies();
     }
 }

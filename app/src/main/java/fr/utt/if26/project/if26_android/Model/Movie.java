@@ -13,6 +13,15 @@ public class Movie {
     private String releaseDate;
     private Video[] videos;
 
+    public Movie(int id, String originalTitle, String posterPath, Number voteAverage, String overview, String releaseDate, Video[] videos) {
+        this.id = id;
+        this.originalTitle = originalTitle;
+        this.posterPath = posterPath;
+        this.voteAverage = voteAverage;
+        this.overview = overview;
+        this.releaseDate = releaseDate;
+        this.videos = videos;
+    }
 
     public Movie(JSONObject jsonMovie) throws JSONException {
         this.id = (int) jsonMovie.get("id");
