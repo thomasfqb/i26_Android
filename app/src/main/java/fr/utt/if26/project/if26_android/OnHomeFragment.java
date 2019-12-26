@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 
-import androidx.fragment.app.Fragment;
-
-import fr.utt.if26.project.if26_android.Model.Movie;
 import fr.utt.if26.project.if26_android.Model.MovieResult;
 import fr.utt.if26.project.if26_android.Services.ResultHandler;
 import fr.utt.if26.project.if26_android.Services.Service;

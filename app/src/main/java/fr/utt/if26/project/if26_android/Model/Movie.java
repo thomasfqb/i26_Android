@@ -8,20 +8,10 @@ public class Movie {
     private int id;
     private String originalTitle;
     private String posterPath;
-    private Number voteAverage;
+    private Double voteAverage;
     private String overview;
     private String releaseDate;
     private Video[] videos;
-
-    public Movie(int id, String originalTitle, String posterPath, Number voteAverage, String overview, String releaseDate, Video[] videos) {
-        this.id = id;
-        this.originalTitle = originalTitle;
-        this.posterPath = posterPath;
-        this.voteAverage = voteAverage;
-        this.overview = overview;
-        this.releaseDate = releaseDate;
-        this.videos = videos;
-    }
 
     public Movie(JSONObject jsonMovie) throws JSONException {
         this.id = (int) jsonMovie.get("id");
@@ -30,6 +20,15 @@ public class Movie {
         this.voteAverage = ((Number) jsonMovie.get("vote_average")).doubleValue();
         this.overview = (String) jsonMovie.get("overview");
         this.releaseDate = !jsonMovie.getString("release_date").equals("null") ? (String) jsonMovie.get("release_date") : "";
+    }
+
+    public Movie(String originalTitle, String posterPath, Double voteAverage, String overview, String releaseDate) {
+        this.originalTitle = originalTitle;
+        this.posterPath = posterPath;
+        this.voteAverage = voteAverage;
+        this.overview = overview;
+        this.releaseDate = releaseDate;
+        //this.videos = videos;
     }
 
     public int getId() {
@@ -60,9 +59,9 @@ public class Movie {
         return voteAverage;
     }
 
-    public void setVoteAverage(Number voteAverage) {
-        this.voteAverage = voteAverage;
-    }
+    //public void setVoteAverage(Number voteAverage) {
+     //   this.voteAverage = voteAverage;
+   // }
 
     public String getOverview() {
         return overview;

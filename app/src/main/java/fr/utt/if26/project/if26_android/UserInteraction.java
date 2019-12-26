@@ -14,6 +14,7 @@ public abstract class UserInteraction {
         Intent intent = new Intent(view.getContext(), MovieDetailsActivity.class);
 
         intent.putExtra("SENDER_KEY", "MY_FRAGMENT");
+        //intent.putExtra("originalTitle", movie.getId());
         intent.putExtra("originalTitle", movie.getOriginalTitle());
         intent.putExtra("posterPath", movie.getPosterPath());
         intent.putExtra("voteAverage", movie.getVoteAverage());
