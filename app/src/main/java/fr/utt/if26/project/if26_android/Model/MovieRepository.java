@@ -12,6 +12,7 @@ import fr.utt.if26.project.if26_android.Database.MovieRoomDatabase;
 public class MovieRepository {
     private MovieDao mMovieDao;
     private LiveData<List<Movie>> mAllMovies;
+    private List<Movie> mAllTypeMovies;
     private int numberOfMovieById;
 
     MovieRepository(Application application) {
@@ -26,6 +27,10 @@ public class MovieRepository {
         return mAllMovies;
     }
 
+    List<Movie> getAllTypeMovies() {
+        return mAllTypeMovies;
+    }
+
 
     // You must call this on a non-UI thread or your app will throw an exception. Room ensures
     // that you're not doing any long running operations on the main thread, blocking the UI.
@@ -38,11 +43,5 @@ public class MovieRepository {
         MovieRoomDatabase.databaseWriteExecutor.execute(() -> {
             mMovieDao.delete(movie);
         });
-    }
-    int countNumberOfMovieById(int id) {
-        MovieRoomDatabase.databaseWriteExecutor.execute(() -> {
-            numberOfMovieById = mMovieDao.countNumberOfMovieById(id);
-        });
-        return numberOfMovieById;
     }
 }

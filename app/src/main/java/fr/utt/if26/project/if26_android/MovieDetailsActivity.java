@@ -1,6 +1,7 @@
 package fr.utt.if26.project.if26_android;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
@@ -8,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -16,7 +18,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import fr.utt.if26.project.if26_android.Model.Movie;
 import fr.utt.if26.project.if26_android.Model.MovieViewModel;
@@ -64,23 +68,26 @@ public class MovieDetailsActivity extends AppCompatActivity{
             }
         }).get(MovieViewModel.class);
 
-        int numberOfMovieInDB = mMovieViewModel.countNumberOfMovieById(movie.getId());
-
-        if (numberOfMovieInDB > 0) {
-            isFavorite = true;
-            addTofavorite.setImageResource(R.drawable.ic_favorite_white_24dp);
-        } else {
-            isFavorite = false;
-            addTofavorite.setImageResource(R.drawable.ic_favorite_border_white_24dp);
-        }
-
         mMovieViewModel.getAllMovies().observe(this, new Observer<List<Movie>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
-            public void onChanged(@Nullable final List<Movie> words) {
-                // Update the cached copy of the words in the adapter.
+            public void onChanged(@Nullable final List<Movie> movies) {
 
+                ArrayList<Integer> idList= (ArrayList<Integer>) movies.stream()
+                        .map(Movie::getId)
+                        .collect(Collectors.toList());
+
+                isFavorite = idList.contains(movie.getId());
+                if (isFavorite) {
+                    addTofavorite.setImageResource(R.drawable.ic_favorite_white_24dp);
+                } else {
+                    addTofavorite.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+                }
             }
+
+
         });
+
 
 
         Glide.with(this)

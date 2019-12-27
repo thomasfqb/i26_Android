@@ -2,18 +2,16 @@ package fr.utt.if26.project.if26_android.Database;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import fr.utt.if26.project.if26_android.Model.Movie;
 
-@Database(entities = {Movie.class}, version = 2, exportSchema = false)
+@Database(entities = {Movie.class}, version = 4, exportSchema = false)
 public abstract class MovieRoomDatabase extends RoomDatabase {
 
     public abstract MovieDao movieDao();
@@ -30,7 +28,7 @@ public abstract class MovieRoomDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             MovieRoomDatabase.class, "mymovie_database")
-                            //.fallbackToDestructiveMigration()
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

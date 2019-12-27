@@ -27,7 +27,4 @@ public interface MovieDao {
 
     @Query("SELECT * from movie_table")
     LiveData<List<Movie>> getAllMovies();
-
-    @Query("SELECT COUNT(*) from movie_table where id = :id")
-    int countNumberOfMovieById(int id);
 }

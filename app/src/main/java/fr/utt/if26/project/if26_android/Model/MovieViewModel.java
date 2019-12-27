@@ -13,10 +13,13 @@ public class MovieViewModel extends AndroidViewModel {
 
     private LiveData<List<Movie>> mAllMovies;
 
+    private List<Movie> mAllTypeMovies;
+
     public MovieViewModel (Application application) {
         super(application);
         mRepository = new MovieRepository(application);
         mAllMovies = mRepository.getAllMovies();
+        mAllTypeMovies = mRepository.getAllTypeMovies();
     }
 
     public LiveData<List<Movie>> getAllMovies() { return mAllMovies; }
@@ -25,5 +28,4 @@ public class MovieViewModel extends AndroidViewModel {
 
     public void delete(Movie movie) { mRepository.delete(movie); }
 
-    public int countNumberOfMovieById(int id) { return mRepository.countNumberOfMovieById(id); }
 }
