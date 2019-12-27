@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Service /*extends AsyncTask<String, Void, ResultHandler>*/ {
+public class Service {
 
     public static Service service = new Service();
 

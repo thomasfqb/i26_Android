@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
-import fr.utt.if26.project.if26_android.Model.MovieResult;
+import java.util.List;
+
+import fr.utt.if26.project.if26_android.Model.Movie;
 import fr.utt.if26.project.if26_android.Services.Service;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -22,11 +24,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private Context mContext;
     private UserInteraction userInteraction;
-    private MovieResult mMovies;
+    private List<Movie> mMovies;
 
 
 
-    public RecyclerViewAdapter(Context mContext, UserInteraction userInteraction, MovieResult movies) {
+    public RecyclerViewAdapter(Context mContext, UserInteraction userInteraction, List<Movie> movies) {
         this.mMovies  = movies;
         this.mContext = mContext;
         this.userInteraction = userInteraction;
@@ -48,19 +50,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
         Glide.with(mContext)
                 .asBitmap()
-                .load(Service.service.imageBaseUrl + mMovies.getMovies().get(position).getPosterPath())
+                .load(Service.service.imageBaseUrl + mMovies.get(position).getPosterPath())
                 .into(holder.movieImage);
 
-        holder.movieTitle.setText(mMovies.getMovies().get(position).getOriginalTitle());
-        holder.movieReleaseDate.setText(mMovies.getMovies().get(position).getReleaseDate());
-        holder.movieAverageRating.setText(mMovies.getMovies().get(position).getVoteAverage().toString());
-
-
+        holder.movieTitle.setText(mMovies.get(position).getOriginalTitle());
+        holder.movieReleaseDate.setText(mMovies.get(position).getReleaseDate());
+        holder.movieAverageRating.setText(mMovies.get(position).getVoteAverage().toString());
     }
 
     @Override
     public int getItemCount() {
-        return mMovies.getMovies().size();
+        return mMovies.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

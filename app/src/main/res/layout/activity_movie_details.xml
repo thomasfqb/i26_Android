@@ -23,10 +23,12 @@
 
             <ImageView
                 android:id="@+id/add_to_favorite"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:onClick="addToFavorite"
                 android:layout_alignTop="@id/movie_image_movie_detail"
                 android:layout_alignEnd="@id/movie_image_movie_detail"
+                android:layout_margin="5dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_favorite_border_white_24dp"/>
             </RelativeLayout>

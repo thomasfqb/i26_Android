@@ -1,19 +1,35 @@
 package fr.utt.if26.project.if26_android;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import fr.utt.if26.project.if26_android.Model.Movie;
+import fr.utt.if26.project.if26_android.Model.MovieViewModel;
 import fr.utt.if26.project.if26_android.Services.Service;
 
 public class MovieDetailsActivity extends AppCompatActivity{
 
+    public static final String EXTRA_REPLY = "com.example.android.wordlistsql.REPLY";
+    private MovieViewModel mMovieViewModel;
     Movie movie;
     ImageView movieImage;
     ImageView addTofavorite;
@@ -21,6 +37,7 @@ public class MovieDetailsActivity extends AppCompatActivity{
     TextView releaseDate;
     TextView rateAverage;
     TextView movieDescription;
+    boolean isFavorite;
 
 
     @Override
@@ -36,12 +53,35 @@ public class MovieDetailsActivity extends AppCompatActivity{
 
         Intent intent = getIntent();
 
-        movie = new Movie( intent.getStringExtra("originalTitle"),
-                intent.getStringExtra("posterPath"),
-                intent.getDoubleExtra("voteAverage", 0),
-                intent.getStringExtra("overview"),
-                intent.getStringExtra("releaseDate"));
-                //intent.getStringExtra("videos"));
+        movie = intent.getParcelableExtra("movie");
+
+        mMovieViewModel = ViewModelProviders.of(this, new ViewModelProvider.Factory() {
+            @SuppressWarnings("unchecked") @Override public <T extends ViewModel> T create(final Class<T> modelClass) {
+                if (modelClass.equals(MovieViewModel.class)) {
+                    return (T) new MovieViewModel(getApplication());
+                } else {
+                    return null;
+                }
+            }
+        }).get(MovieViewModel.class);
+
+        mMovieViewModel.getAllMovies().observe(this, new Observer<List<Movie>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onChanged(@Nullable final List<Movie> movies) {
+
+                ArrayList<Integer> idList = (ArrayList<Integer>) movies.stream()
+                        .map(Movie::getId)
+                        .collect(Collectors.toList());
+
+                isFavorite = idList.contains(movie.getId());
+                if (isFavorite) {
+                    addTofavorite.setImageResource(R.drawable.ic_favorite_white_24dp);
+                } else {
+                    addTofavorite.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+                }
+            }
+        });
 
         Glide.with(this)
                 .asBitmap()
@@ -49,9 +89,19 @@ public class MovieDetailsActivity extends AppCompatActivity{
                 .into(movieImage);
 
         titleMovieDetails.setText(movie.getOriginalTitle());
-
         releaseDate.setText(movie.getReleaseDate());
         rateAverage.setText(movie.getVoteAverage().toString());
         movieDescription.setText(movie.getOverview());
+    }
+
+    public void addToFavorite(View view) {
+        isFavorite = !isFavorite;
+        if (isFavorite) {
+            addTofavorite.setImageResource(R.drawable.ic_favorite_white_24dp);
+            mMovieViewModel.insert(movie);
+        } else {
+            addTofavorite.setImageResource(R.drawable.ic_favorite_border_white_24dp);
+            mMovieViewModel.delete(movie);
+        }
     }
 }

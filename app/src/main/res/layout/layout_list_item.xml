@@ -27,7 +27,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/movie_image"
                 android:background="@color/cardview_dark_background"
-                android:src="@drawable/ic_favorite_black_24dp"/>
+                android:src="@drawable/ic_favorite_white_24dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

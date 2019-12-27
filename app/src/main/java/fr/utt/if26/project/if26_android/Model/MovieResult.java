@@ -5,8 +5,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-
 
 public class MovieResult {
 
@@ -14,8 +12,6 @@ public class MovieResult {
     private int page;
     private int totalResults;
     private int totalPages;
-
-
 
     public ArrayList<Movie> getMovies() {
         return movies;

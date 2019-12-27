@@ -2,10 +2,8 @@ package fr.utt.if26.project.if26_android;
 
 import android.os.Build;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
 
 import java.util.List;
 import java.util.stream.Collectors;

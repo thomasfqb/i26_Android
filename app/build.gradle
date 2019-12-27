@@ -44,4 +44,18 @@ dependencies {
 
     //circleimageview
     implementation 'de.hdodenhof:circleimageview:3.0.1'
+
+    //Room
+    def room_version = "2.2.3"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+        // Test helpers
+    testImplementation "androidx.room:room-testing:$room_version"
+
+    //Lifecycle
+    def lifecycle_version = "2.1.0"
+        // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
 }

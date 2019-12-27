@@ -1,17 +1,41 @@
 package fr.utt.if26.project.if26_android.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Movie {
+@Entity (tableName = "movie_table")
+public class Movie implements Parcelable {
 
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "id")
     private int id;
+
+    @ColumnInfo(name = "original_title")
     private String originalTitle;
+
+    @ColumnInfo(name = "poster_path")
     private String posterPath;
+
+    @ColumnInfo(name = "vote_average")
     private Double voteAverage;
+
+    @ColumnInfo(name = "overview")
     private String overview;
+
+    @ColumnInfo(name = "release_date")
     private String releaseDate;
-    private Video[] videos;
+
+   /*@ColumnInfo(name = "video")
+    private Video[] videos;*/
 
     public Movie(JSONObject jsonMovie) throws JSONException {
         this.id = (int) jsonMovie.get("id");
@@ -31,6 +55,15 @@ public class Movie {
         //this.videos = videos;
     }
 
+    private Movie(Parcel in) {
+        id = in.readInt();
+        originalTitle = in.readString();
+        posterPath = in.readString();
+        voteAverage = in.readDouble();
+        overview = in.readString();
+        releaseDate = in.readString();
+    }
+
     public int getId() {
         return id;
     }
@@ -43,47 +76,56 @@ public class Movie {
         return originalTitle;
     }
 
-    public void setOriginalTitle(String originalTitle) {
-        this.originalTitle = originalTitle;
-    }
-
     public String getPosterPath() {
         return posterPath;
     }
 
-    public void setPosterPath(String posterPath) {
-        this.posterPath = posterPath;
-    }
-
-    public Number getVoteAverage() {
+    public Double getVoteAverage() {
         return voteAverage;
     }
 
-    //public void setVoteAverage(Number voteAverage) {
-     //   this.voteAverage = voteAverage;
-   // }
-
     public String getOverview() {
         return overview;
-    }
-
-    public void setOverview(String overview) {
-        this.overview = overview;
     }
 
     public String getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
-        this.releaseDate = releaseDate;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public Video[] getVideos() {
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(originalTitle);
+        dest.writeString(posterPath);
+
+        dest.writeDouble(voteAverage);
+        dest.writeString(overview);
+        dest.writeString(releaseDate);
+        //dest.writeString(video);
+
+    }
+
+    // this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
+
+    /*  public Video[] getVideos() {
         return videos;
     }
 
     public void setVideos(Video[] videos) {
         this.videos = videos;
-    }
+    }*/
 }
