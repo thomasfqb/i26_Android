@@ -6,20 +6,13 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import fr.utt.if26.project.if26_android.Model.Movie;
-import fr.utt.if26.project.if26_android.Model.MovieResult;
-import fr.utt.if26.project.if26_android.Services.ResultHandler;
-import fr.utt.if26.project.if26_android.Services.Service;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -28,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
 
     }
-
 
     private BottomNavigationView.OnNavigationItemSelectedListener navigationItemReselectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {

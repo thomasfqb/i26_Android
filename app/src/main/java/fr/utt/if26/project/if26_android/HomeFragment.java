@@ -1,6 +1,5 @@
 package fr.utt.if26.project.if26_android;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,7 +46,7 @@ public class HomeFragment extends Fragment{
 
     public void initRecyclerView () {
         RecyclerView recyclerView = view.findViewById(R.id.recyvlerview_home);
-        adapter = new HomeRecyclerViewAdapter(view.getContext(), userInteraction, mMovieResult);
+        adapter = new RecyclerViewAdapter(view.getContext(), userInteraction, mMovieResult.getMovies());
         recyclerView.setAdapter(adapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

@@ -39,19 +39,19 @@ public class SearchFragment extends Fragment {
     private RecyclerViewAdapter adapter;
     private UserInteraction userInteraction = new OnSearchFragment(this);
 
-    public MovieResult getmMovieResult() {
+    MovieResult getmMovieResult() {
         return mMovieResult;
     }
 
-    public RecyclerViewAdapter getAdapter() {
+    RecyclerViewAdapter getAdapter() {
         return adapter;
     }
 
-    public void setmMovieResult(MovieResult mMovieResult) {
+    void setmMovieResult(MovieResult mMovieResult) {
         this.mMovieResult = mMovieResult;
     }
 
-    public String getQuery() {
+    String getQuery() {
         return query;
     }
 
@@ -77,7 +77,6 @@ public class SearchFragment extends Fragment {
 
             }
         });
-
 
         ImageView ivBackArrow = view.findViewById(R.id.return_black_arrow);
         ivBackArrow.setOnClickListener(new View.OnClickListener() {
@@ -114,10 +113,10 @@ public class SearchFragment extends Fragment {
         return view;
     }
 
-    public void initRecyclerView () {
+    void initRecyclerView () {
         Log.d(TAG, "initRecyclerView: recyclerView");
         RecyclerView recyclerView = view.findViewById(R.id.recyvlerview_search);
-        adapter = new SearchRecyclerViewAdapter(view.getContext(), userInteraction, mMovieResult);
+        adapter = new RecyclerViewAdapter(view.getContext(), userInteraction, mMovieResult.getMovies());
         recyclerView.setAdapter(adapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -173,7 +172,6 @@ public class SearchFragment extends Fragment {
         super.onResume();
         setAppBaeState(STANDARD_APPBAR);
     }
-
 
     private void fetchMovies() {
         userInteraction.fetchMovies();

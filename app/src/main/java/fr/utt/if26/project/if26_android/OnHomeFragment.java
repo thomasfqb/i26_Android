@@ -1,8 +1,6 @@
 package fr.utt.if26.project.if26_android;
 
-import android.content.Intent;
 import android.util.Log;
-import android.view.View;
 
 import fr.utt.if26.project.if26_android.Model.MovieResult;
 import fr.utt.if26.project.if26_android.Services.ResultHandler;

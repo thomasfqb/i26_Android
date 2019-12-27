@@ -14,8 +14,6 @@ import fr.utt.if26.project.if26_android.Model.Movie;
 @Dao
 public interface MovieDao {
 
-    // allowing the insert of the same movie multiple times by passing a
-    // conflict resolution strategy
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Movie movie);
 

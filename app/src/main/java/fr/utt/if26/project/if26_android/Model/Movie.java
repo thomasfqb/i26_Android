@@ -46,15 +46,6 @@ public class Movie implements Parcelable {
         this.releaseDate = !jsonMovie.getString("release_date").equals("null") ? (String) jsonMovie.get("release_date") : "";
     }
 
-    public Movie (String testDatabase) {
-        this.id = 1;
-        this.originalTitle = testDatabase;
-        this.posterPath = testDatabase;
-       //this.voteAverage = testDatabase;
-        this.overview = testDatabase;
-        this.releaseDate = testDatabase;
-    }
-
     public Movie(String originalTitle, String posterPath, Double voteAverage, String overview, String releaseDate) {
         this.originalTitle = originalTitle;
         this.posterPath = posterPath;
@@ -62,6 +53,15 @@ public class Movie implements Parcelable {
         this.overview = overview;
         this.releaseDate = releaseDate;
         //this.videos = videos;
+    }
+
+    private Movie(Parcel in) {
+        id = in.readInt();
+        originalTitle = in.readString();
+        posterPath = in.readString();
+        voteAverage = in.readDouble();
+        overview = in.readString();
+        releaseDate = in.readString();
     }
 
     public int getId() {
@@ -120,18 +120,6 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
-
-
-    // example constructor that takes a Parcel and gives you an object populated with it's values
-    /*Observe that in the case you have more than one field to retrieve from a given Parcel, you must do this in the same order you put them in (that is, in a FIFO approach).*/
-    private Movie(Parcel in) {
-        id = in.readInt();
-        originalTitle = in.readString();
-        posterPath = in.readString();
-        voteAverage = in.readDouble();
-        overview = in.readString();
-        releaseDate = in.readString();
-    }
 
     /*  public Video[] getVideos() {
         return videos;

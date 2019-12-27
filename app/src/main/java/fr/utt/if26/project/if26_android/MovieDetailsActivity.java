@@ -51,9 +51,6 @@ public class MovieDetailsActivity extends AppCompatActivity{
         titleMovieDetails = findViewById(R.id.title_movie_details);
         movieDescription = findViewById(R.id.movie_description_movie_details);
 
-
-        // todo recuperer le isFavorite en base pour definir son etat dans l'activite is favorite = true/false
-
         Intent intent = getIntent();
 
         movie = intent.getParcelableExtra("movie");
@@ -73,7 +70,7 @@ public class MovieDetailsActivity extends AppCompatActivity{
             @Override
             public void onChanged(@Nullable final List<Movie> movies) {
 
-                ArrayList<Integer> idList= (ArrayList<Integer>) movies.stream()
+                ArrayList<Integer> idList = (ArrayList<Integer>) movies.stream()
                         .map(Movie::getId)
                         .collect(Collectors.toList());
 
@@ -84,17 +81,12 @@ public class MovieDetailsActivity extends AppCompatActivity{
                     addTofavorite.setImageResource(R.drawable.ic_favorite_border_white_24dp);
                 }
             }
-
-
         });
-
-
 
         Glide.with(this)
                 .asBitmap()
                 .load(Service.service.imageBaseUrl + movie.getPosterPath())
                 .into(movieImage);
-
 
         titleMovieDetails.setText(movie.getOriginalTitle());
         releaseDate.setText(movie.getReleaseDate());
@@ -104,7 +96,6 @@ public class MovieDetailsActivity extends AppCompatActivity{
 
     public void addToFavorite(View view) {
         isFavorite = !isFavorite;
-
         if (isFavorite) {
             addTofavorite.setImageResource(R.drawable.ic_favorite_white_24dp);
             mMovieViewModel.insert(movie);
@@ -112,6 +103,5 @@ public class MovieDetailsActivity extends AppCompatActivity{
             addTofavorite.setImageResource(R.drawable.ic_favorite_border_white_24dp);
             mMovieViewModel.delete(movie);
         }
-        //finish();
     }
 }
